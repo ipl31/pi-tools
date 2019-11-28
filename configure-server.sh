@@ -72,6 +72,7 @@ popd
 # Config dnsmasq
 DNSMASQ_TMP=$(mktemp /tmp/configure-server-dnsmasq.XXXXXXX)
 cat > "${DNSMASQ_TMP}" <<-EOF
+no-hosts
 interface=${NIC}
 dhcp-range=${DHCP_RANGE_START},${DHCP_RANGE_END},12h
 log-dhcp
@@ -115,7 +116,13 @@ sudo chmod 644 /etc/systemd/network/11-"${NIC}".network
 sudo rm -f "${NETWORK_TMP}"
 sudo systemctl enable systemd-networkd
 
-
+FSTAB_TMP=$(mktemp /tmp/configure-server-fstab.XXXXXXX)
+cat > "${FSTAB_TMP}" <<-EOF
+proc    /proc   proc    defaults
+${IP}:/tftpboot /boot nfs defaults,vers=3 0 0
+EOF
+sudo mv "${FSTAB_TMP}" "${NFS_CLIENT_DIR}"/etc/fstab
+sudo rm -f "${FSTAB_TMP}"
 
 
 # Enable/start NFS related services
@@ -123,3 +130,6 @@ sudo systemctl enable rpcbind
 sudo systemctl restart rpcbind
 sudo systemctl enable nfs-kernel-server
 sudo systemctl restart nfs-kernel-server
+
+# Add export config
+# Add cmdline.txt config
