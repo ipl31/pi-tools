@@ -5,13 +5,14 @@ on: [push]
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: buster
 
     steps:
     - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: ./build_image.sh
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+    - uses: uraimo/run-on-arch-action@v1.0.5
+    - name: Build raspian image
+      id: runcmd
+      with:
+        architecture: armv7
+        distribution: buster
+        run: ./build_image.sh
