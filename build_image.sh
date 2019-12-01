@@ -4,8 +4,8 @@ set -euo pipefail
 
 echo "Installing deps"
 #sudo apt-get install -y qemu-user-static debootstrap
+apt-get update -y
 apt-get install -y sudo
-sudo apt-get update -y
 sudo apt-get install -y debootstrap
 
 CHROOT_DIR=$(mktemp -d -t ci-XXXXXXXXXX)
