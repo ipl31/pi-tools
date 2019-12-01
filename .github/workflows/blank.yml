@@ -8,11 +8,10 @@ jobs:
     runs-on: buster
 
     steps:
-    - uses: actions/checkout@v1
-    - uses: uraimo/run-on-arch-action@v1.0.5
-    - name: Build raspian image
-      id: runcmd
-      with:
-        architecture: armv7
-        distribution: buster
-        run: ./build_image.sh
+      - uses: actions/checkout@v1
+      - uses: uraimo/run-on-arch-action@v1.0.5
+        id: runcmd
+        with:
+          architecture: armv7
+          distribution: buster
+          run: ./build_image.sh
